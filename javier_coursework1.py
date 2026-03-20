@@ -89,7 +89,7 @@ idSet = {101, 102, 103, 104, 105, 106, 107, 108, 109, 110}
 addItemMenu = ""
 
 def addItem():
-    itemName = str(input("Enter product name: "))
+    itemName = str(input("Enter product name: > "))
     while True:
         print("Select a Category")
         numC = 1
@@ -97,7 +97,7 @@ def addItem():
             print(f"{numC}. {cat}")
             numC = numC + 1
 
-        itemCategory = int(input())
+        itemCategory = int(input("> "))
 
         if 1 <= itemCategory <= len(categoriesList):
             itemCategory = categoriesList[itemCategory - 1]
@@ -106,17 +106,17 @@ def addItem():
         else:
             print("Select a correct option.")
 
-    itemBrandint = str(input("Enter brand name: "))
+    itemBrandint = str(input("Enter brand name: > "))
     itemBrand = (itemBrandint,)
     while True:
         try:
-            itemQuantity = int(input("Enter quantity: "))
+            itemQuantity = int(input("Enter quantity: > "))
             break
         except ValueError:
             print("Invalid input! \nPlease enter a integer number")
     while True:
         try:       
-            itemPrice = float(input("Enter price: "))
+            itemPrice = float(input("Enter price: > "))
             break
         except ValueError:
             print("Invalid input! \nPlease enter a number (It can be a integer or float)")
@@ -131,19 +131,63 @@ def addItem():
     }
     print("Item was added successfully")
 
+def viewItem():
+    print("Select an option")
+
+    while True:
+        numV = 1
+        for i in inventory:
+            print(f"{numV}. {i}")
+            numV = numV + 1
+        
+        selectId = int(input("> "))
+
+        if 1 <= selectId <= len(inventory):
+            listIds = list(inventory.keys())
+            selId = listIds[selectId - 1]
+            
+            nameDis = inventory[selId]["name"]
+            brandDis = inventory[selId]["brand"]
+            categoryDis = inventory[selId]["category"]
+            priceDis = inventory[selId]["price"]
+            quantityDis = inventory[selId]["quantity"]
+
+            print(Product(selId, nameDis, brandDis, categoryDis, priceDis, quantityDis))
+
+            break
+        else:
+            print("Please select a valid option!")
+
+def deleteItem():
+    print("Select an Id to remove item")
+
+
 
 def test():
     for i in inventory:
         
         newId = max(inventory.keys()) + 1
         print(newId)
+
+# Classes
+
+class Product:
+    def __init__(self, ids, name, brand, category, price, quantity):
+        self.id = ids
+        self.name = name
+        self.brand = brand
+        self.category = category
+        self.price = price
+        self.quantity = quantity
     
+    def __str__(self):
+        return f"ID: {self.id} | Name: {self.name} | Brand: {self.brand[0]} | Category: {self.category} | Price: {self.price} | Quantity: {self.quantity}"
 
 # Console Printing
 print(welcoming)
 while(navType != 5):
     print(mainMenu)
-    navType = int(input("Please select an option: "))
+    navType = int(input("Select an option: > "))
 
     if(navType==1):
         print("Add Item")
@@ -152,13 +196,14 @@ while(navType != 5):
     
     if(navType==2):
         print("View Inventory")
-        test()
+        viewItem()
     
     if(navType==3):
         print("Update Item")
     
     if(navType==4):
         print("Remove Item")
+        deleteItem()
     
     if(navType==5):
         print("Saving Inventory...")
