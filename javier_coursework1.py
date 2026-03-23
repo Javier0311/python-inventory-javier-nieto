@@ -202,7 +202,21 @@ def updateItem():
 
 def deleteItem():
     print("Select an Id to remove item")
+    while True:
+        numV = 1
+        for i in inventory:
+            print(f"{numV}. {i}")
+            numV = numV + 1
+        
+        selectId = int(input("> "))
+        listIds = list(inventory.keys())
+        selId = listIds[selectId - 1]
 
+        del inventory[selId]
+        idSet.remove(selId)
+
+        print(f"ID [{selId}] was deleted.")
+        break
 
 
 def test():
