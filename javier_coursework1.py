@@ -1,6 +1,6 @@
 # Messages
 welcoming = "Welcome to the Inventory Management System"
-mainMenu = "1. Add Item \n 2. View Inventory \n 3. Update Item \n 4. Remove Item \n 5. Exit"
+mainMenu = "1. Add Item \n2. View Inventory \n3. Update Item \n4. Remove Item \n5. Exit"
 navType=0
 
 # Dictionary to Inventory
@@ -158,6 +158,48 @@ def viewItem():
         else:
             print("Please select a valid option!")
 
+def updateItem():
+    print("Select an ID to update.")
+    while True:
+        numV = 1
+        for i in inventory:
+            print(f"{numV}. {i}")
+            numV = numV + 1
+        
+        selectId = int(input("> "))
+        listIds = list(inventory.keys())
+        selId = listIds[selectId - 1]
+
+        while True:
+            try:
+                newQuantity = int(input("Enter quantity: > "))
+                break
+            except ValueError:
+                print("Invalid input! \nPlease enter a integer number")
+        while True:
+            try:       
+                newPrice = float(input("Enter price: > "))
+                break
+            except ValueError:
+                print("Invalid input! \nPlease enter a number (It can be a integer or float)")
+
+        nameUp = inventory[selId]["name"]
+        brandUp = inventory[selId]["brand"]
+        categoryUp = inventory[selId]["category"]
+        priceUp = inventory[selId]["price"]
+        quantityUp = inventory[selId]["quantity"]
+
+        updateClass = Product(selId, nameUp, brandUp, categoryUp, priceUp, quantityUp)
+
+        updateClass.updateDetails(newPrice, newQuantity)
+        
+        inventory[selId]["price"] = updateClass.price
+        inventory[selId]["quantity"] = updateClass.quantity
+
+        print(f"The item which ID is {selId} was update \nNew quantity: {inventory[selId]["quantity"]}\nNew price: {inventory[selId]["price"]}")
+        break
+
+
 def deleteItem():
     print("Select an Id to remove item")
 
@@ -182,6 +224,10 @@ class Product:
     
     def __str__(self):
         return f"ID: {self.id} | Name: {self.name} | Brand: {self.brand[0]} | Category: {self.category} | Price: {self.price} | Quantity: {self.quantity}"
+    
+    def updateDetails(self, newPrice, newQuantity):
+        self.price = newPrice
+        self.quantity = newQuantity
 
 # Console Printing
 print(welcoming)
@@ -200,6 +246,7 @@ while(navType != 5):
     
     if(navType==3):
         print("Update Item")
+        updateItem()
     
     if(navType==4):
         print("Remove Item")
